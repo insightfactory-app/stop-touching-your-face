@@ -8,4 +8,4 @@ ENV https_proxy=
 ENV no_proxy=
 RUN pip install -r  requirements.txt
 
-CMD ["gunicorn","-b", "0.0.0.0:5000", "app","-k","gevent","-w","5","--worker-connections=100"]
+CMD ["gunicorn","-b", "0.0.0.0:5000", "app:app","-k","uvicorn.workers.UvicornWorker","-w","5","--worker-connections=100"]
