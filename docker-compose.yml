@@ -18,7 +18,7 @@ services:
     volumes:
       - ./static/:/usr/share/touching-face/static/
     ports:
-      - "8080:5000"
+      - "8181:5000"
 
 
 
