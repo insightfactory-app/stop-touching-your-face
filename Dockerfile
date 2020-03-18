@@ -7,6 +7,7 @@ ENV http_proxy=
 ENV https_proxy=
 ENV no_proxy=
 RUN apt-get update && apt-get -y install cmake protobuf-compiler
+RUN apt-get install libopenblas-dev liblapack-dev
 RUN pip install cmake
 RUN pip install -r  requirements.txt
 
