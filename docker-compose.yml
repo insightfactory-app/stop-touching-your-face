@@ -20,4 +20,11 @@ services:
     ports:
       - "8181:5000"
 
+networks:
+    my-network:
+#networks:
+#  default:
+#   external:
+#      name: nginx-proxy
+
 
