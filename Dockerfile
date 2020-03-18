@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-starlette:python3.6
+FROM tiangolo/uvicorn-gunicorn-starlette:python3.7
 
 EXPOSE 5000
 WORKDIR /app
