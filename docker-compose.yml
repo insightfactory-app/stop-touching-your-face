@@ -22,9 +22,9 @@ services:
 
 
 
-  nginx:
+  nginx-fastai:
      image: nginx:1.13.7
-     container_name: nginx
+     container_name: nginx-fastai
      depends_on:
        - app
      volumes:
