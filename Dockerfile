@@ -12,4 +12,4 @@ RUN pip install -r  requirements.txt
 
 COPY . /app
 
-CMD ["gunicorn","-b", "0.0.0.0:5000", "app:app","-k","uvicorn.workers.UvicornWorker","-w","5","--worker-connections=100"]
+CMD ["gunicorn","-b", "0.0.0.0:5000", "app:app","-k","uvicorn.workers.UvicornWorker","-w","2"]

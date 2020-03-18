@@ -21,25 +21,3 @@ services:
       - "8181:5000"
 
 
-
-  nginx-fastai:
-     image: nginx:1.13.7
-     container_name: nginx-fastai
-     depends_on:
-       - app
-     volumes:
-       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-
-     networks:
-       - my-network
-     ports:
-       - 8080:80
-       - 4000:443
-networks:
-    my-network:
-#networks:
-#  default:
-#   external:
-#      name: nginx-proxy
-
-
