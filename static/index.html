@@ -1,97 +1,37 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Touching your face is bad for ya!</title>
 <script type="text/javascript" src="static/jquery.min.js"></script>
+<script type="text/javascript" src="static/face-api.min.js"></script>
+
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas {
+      position: absolute;
+    }
+  </style>
 </head>
 <body>
-<video autoplay></video>
+<video id="video" width="720" height="560" autoplay muted></video>
 <img src="" class="screenshot" id="screenshot">
 <canvas style="display:none;"></canvas>
 <p><button class="capture-button" id="screenshot-button">Capture video</button>
     <audio id="audio" src="static/warning.wav" autoplay="false" ></audio>
 <div id="snapshots"></div>
-<script>
-const constraints = {
-  video: true
-};
+    <script type="text/javascript" src="static/script.js"></script>
 
-const video = document.querySelector('video');
-
-navigator.mediaDevices.getUserMedia(constraints).
-  then((stream) => {video.srcObject = stream});
-const screenshotButton = document.querySelector('#screenshot-button');
-const img = document.querySelector('#screenshot');
-
-const canvas = document.createElement('canvas');
-
-
-screenshotButton.onclick = video.onclick = function() {
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  // Other browsers will fall back to image/png
-  img.src = canvas.toDataURL('image/webp');
-};
-
-function handleSuccess(stream) {
-  screenshotButton.disabled = false;
-  video.srcObject = stream;
-}
-
-window.setInterval(function(){
-  /// call your function here
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  pic = canvas.toDataURL()
-
-  var data = JSON.stringify(
-				   {
-					   value: pic
-				   });
-  var touch_face_counter = 0;
-
-$.ajax({
-	type: "POST",
-	url: "/receiver",
-	contentType: false,
-	processData: false,
-	data: data,
-	contentType: "application/json; charset=utf-8",
-	success: function (result) {
-		console.log(result);
-		if ("predictions" in result){
-
-
-		predictions = result["predictions"]
-		var i = 0;
-		for(i = 0;i< predictions.length;i++){
-		    pred = predictions[i]
-		    pred_name = pred[0]
-		    if (pred_name == "no"){
-		        no_prob = pred[1]
-		    }
-		    if (pred_name == "touching" ){
-		        yes_prob = pred[1]
-		    }
-
-
-		}
-        classify = "no";
-		if (yes_prob > no_prob){
-		var sound = document.getElementById("audio");
-        sound.play();
-        touch_face_counter += 1;
-        classify = "touching"
-		//alert("Don't touch your face!!!");
-		}
-        var pic = result["pic"];
-        $("#snapshots").append("<img src='data:image/jpg;base64, ${pic}'  /> <p>{1}</p>".replace("${pic}",pic).replace("{1}",classify));
-		}
-	},
-	error: function(){}
-});
-}, 5000);
-</script>
 </body>
 </html>

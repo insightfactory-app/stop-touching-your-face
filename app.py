@@ -26,7 +26,7 @@ async def get_picture(request):
     jpg_as_np = np.frombuffer(jpg_original, dtype=np.uint8)
     img = cv2.imdecode(jpg_as_np, flags=1)
     #img = face_extractor(img,face_cascade)
-    img = face_detection(img)
+    #img = face_detection(img)
     if img is None:
         return JSONResponse({"status": "no face found"})
     #return StreamingResponse(io.BytesIO(cv2.imencode('.jpg', img)[1].tobytes()), media_type="image/jpg")
