@@ -77,7 +77,9 @@ $.ajax({
 		//alert("Don't touch your face!!!");
 		}
         var pic = result["pic"];
-        $("#snapshots").append("<img src='data:image/jpg;base64, ${pic}'  /> <p>{1}</p>".replace("${pic}",pic).replace("{1}",classify));
+        var now = new Date()
+        $("#snapshots").prepend("<img src='data:image/jpg;base64, ${pic}'  /> <p>{1}:  {4}:{2}:{3}</p>".replace("${pic}",pic).replace("{1}",classify).
+        replace("{2}", now.getMinutes()).replace("{3}",now.getSeconds()).replace("{4}", now.getHours()));
 		}
 	},
 	error: function(){}

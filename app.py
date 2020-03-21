@@ -24,7 +24,8 @@ async def get_picture(request):
     picture = json["value"]
     jpg_original = base64.b64decode(picture.split(',')[1])
     jpg_as_np = np.frombuffer(jpg_original, dtype=np.uint8)
-    img = cv2.imdecode(jpg_as_np, flags=1)
+    img = cv2.imdecode(jpg_as_np, flags=0)
+
     #img = face_extractor(img,face_cascade)
     #img = face_detection(img)
     if img is None:
