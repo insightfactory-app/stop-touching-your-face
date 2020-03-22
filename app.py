@@ -6,26 +6,31 @@ from starlette.staticfiles import StaticFiles
 from fastai.vision import *
 import base64
 from io import BytesIO
-
+import time
 import imutils
 import cv2
+import asyncio
+
 
 import face_recognition
 path = Path('static/')
 
-learn = load_learner(path)
+
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+learn = load_learner(path)
 
 async def homepage(request):
     return FileResponse("static/index.html")
 
 async def get_picture(request):
+    start = time.time()
     json =await  request.json()
     picture = json["value"]
     jpg_original = base64.b64decode(picture.split(',')[1])
     jpg_as_np = np.frombuffer(jpg_original, dtype=np.uint8)
     img = cv2.imdecode(jpg_as_np, flags=0)
-
+    img_time_now = time.time()
+    img_time =  img_time_now - start
     #img = face_extractor(img,face_cascade)
     #img = face_detection(img)
     if img is None:
@@ -34,8 +39,10 @@ async def get_picture(request):
     #img = open_image(img)
     #img = open_image(BytesIO(base64.decodebytes(picture.split(',')[1].encode())))
     img_x = open_image(BytesIO(cv2.imencode('.jpg', img)[1].tobytes()))
+    open_img_time = time.time() - img_time_now
     _,_,losses = learn.predict(img_x)
-    return JSONResponse({
+    finish = time.time() - start
+    return JSONResponse({ "time_total": finish, "img_convertion": img_time, "open_img_time": open_img_time,
         "predictions": sorted(
             zip(learn.data.classes, map(float, losses)),
             key=lambda p: p[1],

@@ -69,7 +69,7 @@ $.ajax({
 
 		}
         classify = "no";
-		if (yes_prob > no_prob){
+		if (yes_prob > .7){
 		var sound = document.getElementById("audio");
         sound.play();
         touch_face_counter += 1;
