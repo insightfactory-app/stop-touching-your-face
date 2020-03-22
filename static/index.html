@@ -5,32 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Touching your face is bad for ya!</title>
+
+<script type="text/javascript" src="static/HackTimer.min.js"></script>
 <script type="text/javascript" src="static/jquery.min.js"></script>
 <script type="text/javascript" src="static/face-api.min.js"></script>
 
 <style>
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    .b {
+    display: inline-block;
+    margin: 1%;
+    float: left;
 
-    canvas {
-      position: absolute;
-    }
-  </style>
+}
+</style>
 </head>
 <body>
+<div class="b">
 <video id="video" width="720" height="560" autoplay muted></video>
 <img src="" class="screenshot" id="screenshot">
 <canvas style="display:none;"></canvas>
 <p><button class="capture-button" id="screenshot-button">Capture video</button>
+    </div>
     <audio id="audio" src="static/warning.wav" autoplay="false" ></audio>
-<div id="snapshots"></div>
+<div id="snapshots" class="b"> </div>
     <script type="text/javascript" src="static/script.js"></script>
 
 </body>

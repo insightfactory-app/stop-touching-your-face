@@ -49,7 +49,7 @@ $.ajax({
 	data: data,
 	contentType: "application/json; charset=utf-8",
 	success: function (result) {
-		console.log(result);
+		//console.log(result);
 		if ("predictions" in result){
             no_prob = 0;
             yes_prob = 0;
@@ -78,8 +78,11 @@ $.ajax({
 		}
         var pic = result["pic"];
         var now = new Date()
-        $("#snapshots").prepend("<img src='data:image/jpg;base64, ${pic}'  /> <p>{1}:  {4}:{2}:{3}</p>".replace("${pic}",pic).replace("{1}",classify).
-        replace("{2}", now.getMinutes()).replace("{3}",now.getSeconds()).replace("{4}", now.getHours()));
+        var frag = document.createElement('div');
+        frag.innerHTML = "<img src='data:image/jpg;base64, ${pic}' alt='{1}'  /> <p>{5}:  {4}:{2}:{3} </p>".replace("${pic}",pic).replace("{1}",classify).
+        replace("{2}", now.getMinutes()).replace("{3}",now.getSeconds()).replace("{4}", now.getHours()).replace("{5}",classify);
+
+        $("#snapshots").prepend(frag);
 		}
 	},
 	error: function(){}
@@ -87,4 +90,25 @@ $.ajax({
    // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
    // faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
   }, 3000)
+  $(document).off().on("click","img", function(){
+  classify =  $(this).attr("alt");
+  image = $(this).attr("src");
+  var data = JSON.stringify(
+				   {
+					   "img": image,
+					   "classify": classify
+				   });
+  $.ajax({type: "POST",
+	url: "/wrong",
+	contentType: false,
+	processData: false,
+	data: data,
+	contentType: "application/json; charset=utf-8",
+	success:function(){
+
+	}})
+  });
 })
+setInterval(function(){
+$("#snapshots").empty()
+},240000);

@@ -22,6 +22,16 @@ learn = load_learner(path)
 async def homepage(request):
     return FileResponse("static/index.html")
 
+async def wrong(request):
+    json = await  request.json()
+    picture = json["img"]
+    classify_wrong = json["classify"]
+    jpg_original = base64.b64decode(picture.split(',')[1])
+    filename = "static/wrong_classify/{}/{}.jpg".format(classify_wrong,time.time())
+    with open(filename, 'wb') as f:
+        f.write(jpg_original)
+    return JSONResponse({"status":"reported!"})
+
 async def get_picture(request):
     start = time.time()
     json =await  request.json()
@@ -115,5 +125,6 @@ def face_detection(img):
 app = Starlette(debug=True, routes=[
   Route('/', homepage),
    Route('/receiver',get_picture,methods=["POST"]),
+Route('/wrong',wrong,methods=["POST"]),
 Mount('/static', app=StaticFiles(directory='static'), name="static")
 ])
