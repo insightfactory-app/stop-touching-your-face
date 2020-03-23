@@ -14,18 +14,23 @@ function startVideo() {
     err => console.error(err)
   )
 }
+
 video.addEventListener('play', () => {
   const canvas = faceapi.createCanvasFromMedia(video)
 
   document.body.append(canvas)
   const displaySize = { width: video.width, height: video.height }
   faceapi.matchDimensions(canvas, displaySize)
-  setInterval(async () => {
-    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+  var worker = new Worker('static/web_worker.js');
+  worker.onmessage = async function() {
+  const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
     var face_canvas  = document.createElement("canvas");
     face = resizedDetections[0]
+    if (face == undefined) {
+        return;
+    }
     face_canvas.width = face.box.width * 1.4;
     face_canvas.height = face.box.height * 1.4;
     var ctx = face_canvas.getContext("2d");
@@ -69,7 +74,7 @@ $.ajax({
 
 		}
         classify = "no";
-		if (yes_prob > .7){
+		if (yes_prob > .75){
 		var sound = document.getElementById("audio");
         sound.play();
         touch_face_counter += 1;
@@ -87,9 +92,7 @@ $.ajax({
 	},
 	error: function(){}
 });
-   // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-   // faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-  }, 3000)
+  }
   $(document).off().on("click","img", function(){
   classify =  $(this).attr("alt");
   image = $(this).attr("src");
