@@ -15,7 +15,7 @@ function startVideo() {
   )
 }
 
-video.addEventListener('play', () => {
+video.addEventListener('loadeddata', () => {
   const canvas = faceapi.createCanvasFromMedia(video)
 
   document.body.append(canvas)
