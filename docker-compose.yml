@@ -3,7 +3,7 @@ version: "2"
 services:
   app:
     build: .
-    image: api
+    image: dont_touch_face_api
     restart: always
     networks:
       my-network:
